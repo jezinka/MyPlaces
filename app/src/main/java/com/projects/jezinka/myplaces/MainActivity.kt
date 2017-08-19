@@ -6,8 +6,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -36,6 +38,21 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if (location != null) {
             longtitude.setText(location.longitude.toString())
             latitude.setText(location.latitude.toString())
+        }
+    }
+
+    fun savePlace(view: View) {
+        val builder = AlertDialog.Builder(this)
+        val dialog_view = layoutInflater.inflate(R.layout.fragment_save_note_dialog, null)
+        builder.setMessage("Wpisz notatkę")
+                .setView(dialog_view)
+                .setTitle("Zapisz miejsce")
+                .create()
+                .show()
+
+        if (latitude?.text != null && longtitude?.text != null) {
+            dialog_view.findViewById<TextView>(R.id.latitude_note).text = latitude.text
+            dialog_view.findViewById<TextView>(R.id.longtitude_note).text = longtitude.text
         }
     }
 }
