@@ -9,21 +9,24 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Znajdź mnie!" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/longtitude" />
+        android:onClick="findMeButtonClick"
+        android:text="@string/find_me" />
 
     <TextView
         android:id="@+id/latitude"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/not_set" />
+
+    <TextView
+        android:id="@+id/longtitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/not_set" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Zapisz" />
+        android:text="@string/save" />
 
 </LinearLayout>
