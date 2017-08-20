@@ -5,6 +5,12 @@ import android.provider.BaseColumns
 
 object MyPlacesContract {
 
+    data class MyPlace(val id: Long,
+                       val longtitude: String,
+                       val latitude: String,
+                       val note: String,
+                       val order: Int)
+
     class MyPlaceEntry : BaseColumns {
         companion object {
             val TABLE_NAME = "my_place"

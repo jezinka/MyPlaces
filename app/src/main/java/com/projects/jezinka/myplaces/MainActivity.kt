@@ -20,20 +20,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     var mDbHelper: MyPlacesDBHelper = MyPlacesDBHelper(this)
 
-    override fun onLocationChanged(location: Location?) {
-        longtitude.text = location?.longitude.toString()
-        latitude.text = location?.latitude.toString()
-    }
-
-    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-    override fun onProviderEnabled(p0: String?) {}
-
-    override fun onProviderDisabled(p0: String?) {}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
     }
 
     fun findMeButtonClick(view: View) {
@@ -61,6 +52,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     val note = dialog_view.note.text.toString()
 
                     insertPlace(note, long_coord, lat_coord)
+                    listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
                     dialogInterface.dismiss()
                 })
                 .setNegativeButton(android.R.string.cancel, { dialogInterface, _ ->
@@ -92,4 +84,43 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val db_read = mDbHelper.readableDatabase
         return queryNumEntries(db_read, MyPlacesContract.MyPlaceEntry.TABLE_NAME) + 1
     }
+
+    fun getSavedLocations(): List<MyPlacesContract.MyPlace> {
+
+        val array_list = mutableListOf<MyPlacesContract.MyPlace>()
+
+        val db = mDbHelper.getReadableDatabase()
+        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place", null)
+        if (res!!.getCount() > 0) {
+            res.moveToFirst()
+
+            do {
+                val myPlace = MyPlacesContract.MyPlace(res.getLong(0), res.getString(1), res.getString(2), res.getString(3), res.getInt(4))
+                array_list.add(myPlace)
+            } while (res.moveToNext())
+        }
+
+        db.close()
+        return array_list
+    }
+
+    fun deletePlace(id: Long) {
+        val db = mDbHelper.writableDatabase
+
+        val selection = MyPlacesContract.MyPlaceEntry._ID + " = ?"
+        val selectionArgs = arrayOf(id.toString())
+        db.delete(MyPlacesContract.MyPlaceEntry.TABLE_NAME, selection, selectionArgs)
+        listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
+    }
+
+    override fun onLocationChanged(location: Location?) {
+        longtitude.text = location?.longitude.toString()
+        latitude.text = location?.latitude.toString()
+    }
+
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
+
+    override fun onProviderEnabled(p0: String?) {}
+
+    override fun onProviderDisabled(p0: String?) {}
 }
