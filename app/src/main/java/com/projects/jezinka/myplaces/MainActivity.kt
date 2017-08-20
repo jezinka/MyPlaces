@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -47,6 +48,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         builder.setMessage("Wpisz notatkę")
                 .setView(dialog_view)
                 .setTitle("Zapisz miejsce")
+                .setPositiveButton(R.string.save, { dialogInterface, i ->
+                    Toast.makeText(view.context, "Zapisuję!", Toast.LENGTH_SHORT).show()
+                })
+                .setNegativeButton(android.R.string.cancel, { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                })
                 .create()
                 .show()
 
