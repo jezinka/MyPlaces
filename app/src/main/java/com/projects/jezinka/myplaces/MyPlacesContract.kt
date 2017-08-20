@@ -13,6 +13,7 @@ object MyPlacesContract {
             val COLUMN_NAME_LONGTITUDE = "longtitude"
             val COLUMN_NAME_LATITUDE = "latitude"
             val COLUMN_NAME_NOTE = "note"
+            val COLUMN_NAME_ORDER = "order_no"
         }
     }
 }
