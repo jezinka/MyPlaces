@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private fun insertPlace(note: String, longtitude: String, latitude: String) {
 
-        val db = mDbHelper.getWritableDatabase()
+        val db = mDbHelper.writableDatabase
 
         val values = ContentValues()
         values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE, note)
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     fun getNextOrder(): Long {
-        val db_read = mDbHelper.getReadableDatabase()
+        val db_read = mDbHelper.readableDatabase
         return queryNumEntries(db_read, MyPlacesContract.MyPlaceEntry.TABLE_NAME) + 1
     }
 }
