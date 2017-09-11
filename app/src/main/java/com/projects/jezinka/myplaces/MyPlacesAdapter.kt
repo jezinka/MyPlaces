@@ -37,6 +37,7 @@ class MyPlacesAdapter(context: Context, private val layoutResourceId: Int, priva
             holder.latitudeNameView = convertView.latitude_col as TextView
             holder.noteNameView = convertView.note_col as TextView
             holder.deleteButton = convertView.delete_button as ImageButton
+            holder.editButton = convertView.edit_button as ImageButton
             convertView.tag = holder
         } else {
             holder = convertView.tag as ViewHolder
@@ -45,11 +46,9 @@ class MyPlacesAdapter(context: Context, private val layoutResourceId: Int, priva
         holder.longtitudeNameView!!.setText(myPlace.longtitude)
         holder.latitudeNameView!!.setText(myPlace.latitude)
         holder.noteNameView!!.setText(myPlace.note)
+        (holder.deleteButton as ImageButton).setOnClickListener({ (context as MainActivity).deletePlace(myPlace.id) })
+        (holder.editButton as ImageButton).setOnClickListener({ (context as MainActivity).editPlace(myPlace.id) })
 
-
-        if (holder.deleteButton != null) {
-            (holder.deleteButton as ImageButton).setOnClickListener({ (context as MainActivity).deletePlace(myPlace.id) })
-        }
 
         return convertView
     }
@@ -59,5 +58,6 @@ class MyPlacesAdapter(context: Context, private val layoutResourceId: Int, priva
         internal var latitudeNameView: TextView? = null
         internal var noteNameView: TextView? = null
         internal var deleteButton: ImageButton? = null
+        internal var editButton: ImageButton? = null
     }
 }

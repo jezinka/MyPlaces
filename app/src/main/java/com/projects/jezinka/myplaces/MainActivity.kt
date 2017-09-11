@@ -39,32 +39,36 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     fun savePlace(view: View) {
-        val builder = AlertDialog.Builder(this)
         val dialog_view = layoutInflater.inflate(R.layout.fragment_save_note_dialog, null)
+        var dialog = showEditDialog(dialog_view, null)
+        dialog.setPositiveButton(R.string.save, { dialogInterface, _ ->
+            Toast.makeText(view.context, "Zapisuję!", Toast.LENGTH_SHORT).show()
+
+            val long_coord = dialog_view.longtitude_note.text as String
+            val lat_coord = dialog_view.latitude_note.text as String
+            val note = dialog_view.note.text.toString()
+
+            insertPlace(note, long_coord, lat_coord)
+            listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
+            dialogInterface.dismiss()
+        }).create().show()
+    }
+
+    private fun showEditDialog(dialog_view: View, id: Long?): AlertDialog.Builder {
+        val builder = AlertDialog.Builder(this)
         builder.setMessage("Wpisz notatkę")
                 .setView(dialog_view)
                 .setTitle("Zapisz miejsce")
-                .setPositiveButton(R.string.save, { dialogInterface, _ ->
-                    Toast.makeText(view.context, "Zapisuję!", Toast.LENGTH_SHORT).show()
-
-                    val long_coord = dialog_view.longtitude_note.text as String
-                    val lat_coord = dialog_view.latitude_note.text as String
-                    val note = dialog_view.note.text.toString()
-
-                    insertPlace(note, long_coord, lat_coord)
-                    listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
-                    dialogInterface.dismiss()
-                })
                 .setNegativeButton(android.R.string.cancel, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 })
-                .create()
-                .show()
 
         if (latitude?.text != null && longtitude?.text != null) {
             dialog_view.latitude_note.text = latitude.text
             dialog_view.longtitude_note.text = longtitude.text
         }
+
+        return builder
     }
 
     private fun insertPlace(note: String, longtitude: String, latitude: String) {
@@ -80,6 +84,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val newRowId = db.insert(MyPlacesContract.MyPlaceEntry.TABLE_NAME, null, values)
     }
 
+    private fun updatePlace(note: String, id: Long) {
+
+        val db = mDbHelper.writableDatabase
+
+        val values = ContentValues()
+        values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE, note)
+
+        val newRowId = db.update(MyPlacesContract.MyPlaceEntry.TABLE_NAME, values, "_id=" + id, null)
+    }
+
     fun getNextOrder(): Long {
         val db_read = mDbHelper.readableDatabase
         return queryNumEntries(db_read, MyPlacesContract.MyPlaceEntry.TABLE_NAME) + 1
@@ -89,8 +103,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         val array_list = mutableListOf<MyPlacesContract.MyPlace>()
 
-        val db = mDbHelper.getReadableDatabase()
-        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place", null)
+        val db = mDbHelper.readableDatabase
+        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place order by order_no", null)
         if (res!!.getCount() > 0) {
             res.moveToFirst()
 
@@ -111,6 +125,34 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val selectionArgs = arrayOf(id.toString())
         db.delete(MyPlacesContract.MyPlaceEntry.TABLE_NAME, selection, selectionArgs)
         listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
+    }
+
+    fun editPlace(id: Long) {
+        val dialog_view = layoutInflater.inflate(R.layout.fragment_save_note_dialog, null)
+        var dialog = showEditDialog(dialog_view, null)
+
+        val db = mDbHelper.readableDatabase
+        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place where _id = " + id + " order by order_no", null)
+        if (res!!.count == 1) {
+            res.moveToFirst()
+
+            val myPlace = MyPlacesContract.MyPlace(res.getLong(0), res.getString(1), res.getString(2), res.getString(3), res.getInt(4))
+            dialog_view.longtitude_note.setText(myPlace.longtitude)
+            dialog_view.latitude_note.setText(myPlace.latitude)
+            dialog_view.note.setText(myPlace.note)
+        }
+
+        db.close()
+
+        dialog.setPositiveButton(R.string.save, { dialogInterface, _ ->
+            Toast.makeText(this, "Zapisuję!", Toast.LENGTH_SHORT).show()
+
+            val note = dialog_view.note.text.toString()
+
+            updatePlace(note, id)
+            listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
+            dialogInterface.dismiss()
+        }).create().show()
     }
 
     override fun onLocationChanged(location: Location?) {
