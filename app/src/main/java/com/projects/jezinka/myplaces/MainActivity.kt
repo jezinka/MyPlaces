@@ -2,6 +2,7 @@ package com.projects.jezinka.myplaces
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.database.DatabaseUtils.queryNumEntries
 import android.location.Criteria
 import android.location.Location
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val location = locationManager.getLastKnownLocation(bestProvider)
 
         if (location != null) {
-            longtitude.text = location.longitude.toString()
+            longitude.text = location.longitude.toString()
             latitude.text = location.latitude.toString()
         }
     }
@@ -52,9 +53,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     dialogInterface.dismiss()
                 })
 
-        if (latitude?.text != null && longtitude?.text != null) {
+        if (latitude?.text != null && longitude?.text != null) {
             dialog_view.latitude_note.text = latitude.text
-            dialog_view.longtitude_note.text = longtitude.text
+            dialog_view.longitude_note.text = longitude.text
         }
 
         if (id != null) {
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             builder.setPositiveButton(R.string.save, { dialogInterface, _ ->
                 Toast.makeText(dialog_view.context, "Zapisuję!", Toast.LENGTH_SHORT).show()
 
-                val long_coord = dialog_view.longtitude_note.text as String
+                val long_coord = dialog_view.longitude_note.text as String
                 val lat_coord = dialog_view.latitude_note.text as String
                 val note = dialog_view.note.text.toString()
 
@@ -84,13 +85,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
         return builder
     }
 
-    private fun insertPlace(note: String, longtitude: String, latitude: String) {
+    private fun insertPlace(note: String, longitude: String, latitude: String) {
 
         val db = mDbHelper.writableDatabase
 
         val values = ContentValues()
         values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE, note)
-        values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LONGTITUDE, longtitude)
+        values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LONGITUDE, longitude)
         values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LATITUDE, latitude)
         values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_ORDER, getNextOrder())
 
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val array_list = mutableListOf<MyPlacesContract.MyPlace>()
 
         val db = mDbHelper.readableDatabase
-        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place order by order_no", null)
+        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place order by order_no", null)
         if (res!!.getCount() > 0) {
             res.moveToFirst()
 
@@ -145,12 +146,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         showEditDialog(dialog_view, id).create().show()
 
         val db = mDbHelper.readableDatabase
-        val res = db.rawQuery("select _id, longtitude, latitude, note, order_no from my_place where _id = " + id + " order by order_no", null)
+        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place where _id = " + id + " order by order_no", null)
         if (res!!.count == 1) {
             res.moveToFirst()
 
             val myPlace = MyPlacesContract.MyPlace(res.getLong(0), res.getString(1), res.getString(2), res.getString(3), res.getInt(4))
-            dialog_view.longtitude_note.setText(myPlace.longtitude)
+            dialog_view.longitude_note.setText(myPlace.longitude)
             dialog_view.latitude_note.setText(myPlace.latitude)
             dialog_view.note.setText(myPlace.note)
         }
@@ -159,8 +160,16 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location?) {
-        longtitude.text = location?.longitude.toString()
+        longitude.text = location?.longitude.toString()
         latitude.text = location?.latitude.toString()
+    }
+
+    fun showOnMap(mLong: Double, mLat: Double, mTitle: String) {
+        val activityIntent = Intent(this, MapsActivity::class.java)
+        activityIntent.putExtra("long", mLong)
+        activityIntent.putExtra("lat", mLat)
+        activityIntent.putExtra("title", mTitle)
+        this.startActivity(activityIntent)
     }
 
     override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}

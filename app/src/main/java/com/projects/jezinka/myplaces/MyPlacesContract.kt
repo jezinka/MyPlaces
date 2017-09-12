@@ -6,7 +6,7 @@ import android.provider.BaseColumns
 object MyPlacesContract {
 
     data class MyPlace(val id: Long,
-                       val longtitude: String,
+                       val longitude: String,
                        val latitude: String,
                        val note: String,
                        val order: Int)
@@ -16,7 +16,7 @@ object MyPlacesContract {
             val TABLE_NAME = "my_place"
 
             val _ID = "_id"
-            val COLUMN_NAME_LONGTITUDE = "longtitude"
+            val COLUMN_NAME_LONGITUDE = "longitude"
             val COLUMN_NAME_LATITUDE = "latitude"
             val COLUMN_NAME_NOTE = "note"
             val COLUMN_NAME_ORDER = "order_no"

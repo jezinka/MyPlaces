@@ -10,7 +10,7 @@ class MyPlacesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
             "CREATE TABLE " + MyPlacesContract.MyPlaceEntry.Companion.TABLE_NAME + " (" +
                     MyPlacesContract.MyPlaceEntry.Companion._ID + " INTEGER PRIMARY KEY," +
                     MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_NOTE + " TEXT," +
-                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LONGTITUDE + " TEXT," +
+                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LONGITUDE + " TEXT," +
                     MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LATITUDE + " TEXT," +
                     MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_ORDER + " INTEGER)"
 
@@ -38,7 +38,7 @@ class MyPlacesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     companion object {
         // If you change the database schema, you must increment the database version.
-        val DATABASE_VERSION = 3
+        val DATABASE_VERSION = 4
         val DATABASE_NAME = "myPlaces.db"
     }
 }
