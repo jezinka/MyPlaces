@@ -4,4 +4,7 @@
     <string name="find_me">Znajdź mnie!</string>
     <string name="save">Zapisz</string>
     <string name="title_activity_maps">Map</string>
+    <string name="latitude">Szerokość</string>
+    <string name="longitude">Długość</string>
+    <string name="note">Notka</string>
 </resources>

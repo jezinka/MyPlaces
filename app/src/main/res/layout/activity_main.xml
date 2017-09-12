@@ -40,17 +40,17 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:text="Latitude" />
+            android:text="@string/latitude" />
 
         <TextView
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:text="Longitude" />
+            android:text="@string/longitude" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Note" />
+            android:text="@string/note" />
     </LinearLayout>
     <ListView
         android:id="@+id/listview"
