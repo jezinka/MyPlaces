@@ -34,5 +34,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         val myPlace = LatLng(mlat, mlong)
         mMap!!.addMarker(MarkerOptions().position(myPlace).title(mTitle))
         mMap!!.moveCamera(CameraUpdateFactory.newLatLng(myPlace))
+        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(15f))
     }
 }
