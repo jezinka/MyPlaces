@@ -118,7 +118,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val array_list = mutableListOf<MyPlacesContract.MyPlace>()
 
         val db = mDbHelper.readableDatabase
-        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place order by order_no", null)
+        val res = db.rawQuery("""select ${MyPlacesContract.MyPlaceEntry._ID},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LONGITUDE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LATITUDE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_ORDER}
+            |from my_place order by order_no""".trimMargin(), null)
         if (res!!.getCount() > 0) {
             res.moveToFirst()
 
@@ -135,7 +140,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     fun deletePlace(id: Long) {
         val db = mDbHelper.writableDatabase
 
-        val selection = MyPlacesContract.MyPlaceEntry._ID + " = ?"
+        val selection = "${MyPlacesContract.MyPlaceEntry._ID} = ?"
         val selectionArgs = arrayOf(id.toString())
         db.delete(MyPlacesContract.MyPlaceEntry.TABLE_NAME, selection, selectionArgs)
         listview.adapter = MyPlacesAdapter(this, R.layout.places_list_view, getSavedLocations())
@@ -146,7 +151,14 @@ class MainActivity : AppCompatActivity(), LocationListener {
         showEditDialog(dialog_view, id).create().show()
 
         val db = mDbHelper.readableDatabase
-        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place where _id = $id order by order_no", null)
+        val res = db.rawQuery("""select ${MyPlacesContract.MyPlaceEntry._ID},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LONGITUDE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_LATITUDE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE},
+            |${MyPlacesContract.MyPlaceEntry.COLUMN_NAME_ORDER}
+            |from my_place
+            |where ${MyPlacesContract.MyPlaceEntry._ID} = $id
+            |order by order_no""".trimMargin(), null)
         if (res!!.count == 1) {
             res.moveToFirst()
 

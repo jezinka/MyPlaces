@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteOpenHelper
 class MyPlacesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     private val SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + MyPlacesContract.MyPlaceEntry.Companion.TABLE_NAME + " (" +
-                    MyPlacesContract.MyPlaceEntry.Companion._ID + " INTEGER PRIMARY KEY," +
-                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_NOTE + " TEXT," +
-                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LONGITUDE + " TEXT," +
-                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LATITUDE + " TEXT," +
-                    MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_ORDER + " INTEGER)"
+            """CREATE TABLE ${MyPlacesContract.MyPlaceEntry.Companion.TABLE_NAME}
+                    (${MyPlacesContract.MyPlaceEntry.Companion._ID} INTEGER PRIMARY KEY,
+                    ${MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_NOTE} TEXT,
+                    ${MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LONGITUDE} TEXT,
+                    ${MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_LATITUDE} TEXT,
+                    ${MyPlacesContract.MyPlaceEntry.Companion.COLUMN_NAME_ORDER} INTEGER)"""
 
-    private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + MyPlacesContract.MyPlaceEntry.Companion.TABLE_NAME
+    private val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${MyPlacesContract.MyPlaceEntry.Companion.TABLE_NAME}"
 
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_ENTRIES)
