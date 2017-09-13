@@ -7,4 +7,8 @@
     <string name="latitude">Szerokość</string>
     <string name="longitude">Długość</string>
     <string name="note">Notka</string>
+    <string name="put_note">Wpisz notatkę</string>
+    <string name="save_place">Zapisz miejsce</string>
+    <string name="saving">Zapisuję!</string>
+    <string name="here">Tutaj</string>
 </resources>

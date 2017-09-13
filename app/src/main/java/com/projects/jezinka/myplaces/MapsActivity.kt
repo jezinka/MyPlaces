@@ -14,7 +14,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private var mMap: GoogleMap? = null
     private var mlong: Double = -34.0
     private var mlat: Double = 151.0
-    private var mTitle: String = "Tutaj"
+    private var mTitle: String = getString(R.string.here)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

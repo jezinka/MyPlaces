@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private fun showEditDialog(dialog_view: View, id: Long?): AlertDialog.Builder {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Wpisz notatkę")
+        builder.setMessage(getString(R.string.put_note))
                 .setView(dialog_view)
-                .setTitle("Zapisz miejsce")
+                .setTitle(getString(R.string.save_place))
                 .setNegativeButton(android.R.string.cancel, { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 })
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         if (id != null) {
             builder.setPositiveButton(R.string.save, { dialogInterface, _ ->
-                Toast.makeText(this, "Zapisuję!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.saving), Toast.LENGTH_SHORT).show()
 
                 val note = dialog_view.note.text.toString()
 
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             })
         } else {
             builder.setPositiveButton(R.string.save, { dialogInterface, _ ->
-                Toast.makeText(dialog_view.context, "Zapisuję!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(dialog_view.context, getString(R.string.saving), Toast.LENGTH_SHORT).show()
 
                 val long_coord = dialog_view.longitude_note.text as String
                 val lat_coord = dialog_view.latitude_note.text as String
