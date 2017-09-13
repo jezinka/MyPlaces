@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         val values = ContentValues()
         values.put(MyPlacesContract.MyPlaceEntry.COLUMN_NAME_NOTE, note)
 
-        val newRowId = db.update(MyPlacesContract.MyPlaceEntry.TABLE_NAME, values, "_id=" + id, null)
+        val newRowId = db.update(MyPlacesContract.MyPlaceEntry.TABLE_NAME, values, "_id= $id", null)
     }
 
     fun getNextOrder(): Long {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         showEditDialog(dialog_view, id).create().show()
 
         val db = mDbHelper.readableDatabase
-        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place where _id = " + id + " order by order_no", null)
+        val res = db.rawQuery("select _id, longitude, latitude, note, order_no from my_place where _id = $id order by order_no", null)
         if (res!!.count == 1) {
             res.moveToFirst()
 
