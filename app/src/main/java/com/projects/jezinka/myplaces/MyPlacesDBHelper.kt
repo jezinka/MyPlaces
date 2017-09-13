@@ -38,7 +38,7 @@ class MyPlacesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
 
     companion object {
         // If you change the database schema, you must increment the database version.
-        val DATABASE_VERSION = 4
+        val DATABASE_VERSION = 5
         val DATABASE_NAME = "myPlaces.db"
     }
 }

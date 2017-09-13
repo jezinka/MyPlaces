@@ -2,6 +2,7 @@ package com.projects.jezinka.myplaces
 
 import android.app.Activity
 import android.content.Context
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -41,6 +42,17 @@ class MyPlacesAdapter(context: Context, private val layoutResourceId: Int, priva
         holder.longitudeNameView!!.setText(myPlace.longitude)
         holder.latitudeNameView!!.setText(myPlace.latitude)
         holder.noteNameView!!.setText(myPlace.note)
+
+        (holder.noteNameView as TextView).setOnClickListener({
+            AlertDialog.Builder(convertView!!.context)
+                    .setMessage(myPlace.note)
+                    .setPositiveButton(android.R.string.ok, { dialogInterface, _ ->
+                        dialogInterface.dismiss()
+                    })
+                    .create()
+                    .show()
+        })
+
         (holder.deleteButton as ImageButton).setOnClickListener({ (context as MainActivity).deletePlace(myPlace.id) })
         (holder.editButton as ImageButton).setOnClickListener({ (context as MainActivity).editPlace(myPlace.id) })
         (holder.mapButton as ImageButton).setOnClickListener({ (context as MainActivity).showOnMap(myPlace.longitude.toDouble(), myPlace.latitude.toDouble(), myPlace.note) })
