@@ -12,17 +12,11 @@ import kotlinx.android.synthetic.main.places_list_view.view.*
 
 class MyPlacesAdapter(context: Context, private val layoutResourceId: Int, private var data: List<MyPlacesContract.MyPlace>?) : ArrayAdapter<MyPlacesContract.MyPlace>(context, layoutResourceId, data) {
 
-    override fun getCount(): Int {
-        return this.data!!.size
-    }
+    override fun getCount(): Int = this.data!!.size
 
-    override fun getItem(position: Int): MyPlacesContract.MyPlace? {
-        return this.data!![position]
-    }
+    override fun getItem(position: Int): MyPlacesContract.MyPlace? = this.data!![position]
 
-    override fun getItemId(position: Int): Long {
-        return this.data!![position].id
-    }
+    override fun getItemId(position: Int): Long = this.data!![position].id
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View? {
         var convertView = view
